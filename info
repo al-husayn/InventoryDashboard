@@ -1,0 +1,78 @@
+--------------Color-And-Font-Use-in-Project---------------------------
+
+---Font---
+1.
+-- Righteous
+-- open sans
+
+-----Main-Color------
+1.
+#B576F6
+
+------Gradient-Color------
+1.
+-- #B576F6 , #9a4fe9
+2.
+-- #6AA5E3 , #6866E9
+3.
+-- #FEB683 , #FF8993
+
+
+---------------All Info About Admin Pannel Project----------------------
+
+Company Name    - Modamu
+
+Avtar Name      - Kerem Yigiter
+position        - Company Head
+
+
+------Navigation Link Name--------
+
+---Name----         --------Font-Awesomr-Icon-use-in-Nav-------
+
+- Dashbord          <i class="fas fa-home"></i>
+- Ui Elements       <i class="fab fa-uikit"></i>    
+- Forms Stuff       <i class="fab fa-wpforms"></i>    
+- Data Table        <i class="fas fa-table"></i>    
+- Chart             <i class="far fa-chart-bar"></i>
+- Components        <i class="fas fa-cubes"></i>    
+- Log Out           <i class="fas fa-sign-out-alt"></i>
+
+
+
+-----Header Icon List--------
+
+<i class="fas fa-search"></i>
+
+<i class="far fa-envelope"></i>
+<i class="far fa-bell"></i>
+<i class="fas fa-bars"></i>
+
+
+----------Dashboard-Icon-List----------
+
+<i class="fas fa-layer-group"></i>
+<i class="fas fa-money-check-alt"></i>
+<i class="fas fa-male"></i>
+
+----------Dashboard-Card-Details-------
+
+Total Stock             - Increased by 60%
+Total Profit            - Increased by 50%
+Unique Visitors         - Increased by 70%
+
+---------Company-Employe-Details-------
+
+Name	Email	User Type	Joined	Status
+
+1.
+- Adil Hardin	
+- adilhardin@email.com	
+- Admin	
+- 25 Apr, 2020	
+
+2.
+- Volkan Cekerek	
+- volkancekerek@email.com	
+- Admin	
+- 1 jun, 2019
