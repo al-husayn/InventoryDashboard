@@ -498,7 +498,7 @@ header button {
 .modal .modal_space {
     align-items: center;
     margin: 15px;
-}
+} 
 label{
     color: teal;
 }
@@ -553,9 +553,23 @@ label{
     
 }
 
+.fa-exchange{
+    font-size: 26px;
+}
+
+.in-stock{
+    color:green;
+}
+.out-of-stock{
+    color: red;
+}
+.almost-out-of-stock{
+    color: orange;
+}
+
 
 #add-btn {
-    background-color: black; 
+    background-color: teal; 
     border: none;
     color: white;
     padding: 15px 32px;
@@ -566,7 +580,7 @@ label{
     border-radius: 5%;
   }
 #add-btn:hover{
-    background-color:red;
+    background-color:#002b2b;
 
 }
 

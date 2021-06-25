@@ -3,6 +3,8 @@ const editBtn = document.getElementsByClassName("fa-edit");
 const addProduct = document.getElementsByClassName("add-btn")[0];
 const addItemLi = document.querySelector("#myBtn");
 const addProdBtn = document.querySelector(".add-prod-Btn");
+const closeModalBtn =document.getElementById("btn-close")
+const labelIndicators = document.getElementsByClassName("fa-exchange")
 
 $(document).ready(function () {
   $(".bar").click(function () {
@@ -10,7 +12,7 @@ $(document).ready(function () {
     $("header , .main_contant").toggleClass("slide-left");
   });
   displayProducts();
-
+changeLabelColors()
   let delBtnArray = [...delBtn];
   delBtnArray.forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -40,6 +42,10 @@ $(document).ready(function () {
       addItem();
     });
   });
+  closeModalBtn.addEventListener('click',()=>{
+    closeModal()
+    location.reload()
+  })
 });
 
 function openModal() {
@@ -81,6 +87,9 @@ const PopulateRows = (product) => {
     <td class="rule-center">${product.Qty}</td>
     <td><a href="#"><i class="fas fa-trash" ></i> <span><i
                     class="fas fa-edit"></i></span></a></td>
+    <td><a href="#"><i class="fa fa-exchange " data-indicator=${product.Qty} ></i> </a></td>
+    
+
 </tr>`;
 };
 
@@ -96,6 +105,7 @@ const editItem = (id) => {
       product.Desc = itemDesc.value;
       product.Qty = itemQty.value;
       product.Cat = itemCat.value;
+      // product.Label = itemLabel;
     }
     document.getElementById("pop_modal").style.visibility = "hidden";
   });
@@ -108,6 +118,8 @@ const showItems = (id) => {
   let itemDesc = document.getElementById("itemDesc");
   let itemQty = document.getElementById("itemQty");
   let itemCat = document.getElementById("itemCat");
+  let itemLbale = document.getElementById("itemLabel");
+
   let products = JSON.parse(localStorage.getItem("product"));
   products.forEach((product, index) => {
     if (index == id - 1) {
@@ -115,6 +127,7 @@ const showItems = (id) => {
       itemDesc.value = product.Desc;
       itemQty.value = product.Qty;
       itemCat.value = product.Cat;
+      itemLabel.value = product.Label
     }
   });
 };
@@ -134,6 +147,7 @@ const addItem = () => {
       Desc: itemDesc,
       Cat: itemCat,
       Qty: itemQty,
+       // Label: itemLabel
     };
     PopulateRows(object);
     saveProducts(object);
@@ -141,6 +155,25 @@ const addItem = () => {
     location.reload();
   }
 };
+
+const changeLabelColors= ()=>{
+  let labelArray = [...labelIndicators]
+  // let products = JSON.parse(localStorage.getItem("product"));
+labelArray.forEach((label)=>{
+  let labelQty= parseInt(label.dataset.indicator)
+  // console.log(labelQty)
+  if(labelQty==0){
+    label.classList.add('out-of-stock')
+  }
+  else if(labelQty<20){
+    label.classList.add('almost-out-of-stock')
+  }
+  else{
+    label.classList.add('in-stock')
+
+  }
+})
+}
 
 const getProducts = () => {
   let products = "";
