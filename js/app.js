@@ -5,6 +5,13 @@ const addItemLi = document.querySelector("#myBtn");
 const addProdBtn = document.querySelector(".add-prod-Btn");
 const closeModalBtn =document.getElementById("btn-close")
 const labelIndicators = document.getElementsByClassName("fa-exchange")
+const summaryInputs = document.getElementsByClassName("number_detail")
+const summaryDiv = document.querySelector(".info_card")
+const deleteLi = document.querySelector(".remove")
+const actionCell= document.getElementsByClassName("action")
+const labelHeader = document.querySelector(".labelData")
+const updateDetailsLi = document.querySelector(".update-details")
+const rowField = document.getElementsByClassName("row-field")
 
 $(document).ready(function () {
   $(".bar").click(function () {
@@ -13,27 +20,10 @@ $(document).ready(function () {
   });
   displayProducts();
 changeLabelColors()
-  let delBtnArray = [...delBtn];
-  delBtnArray.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      let id = e.target.closest("tr").rowIndex;
-      e.target.closest("tr").remove();
-      updateLocalStorage(id);
-    });
-  });
-  let editBtnArray = [...editBtn];
-  editBtnArray.forEach((editBtn) => {
-    editBtn.addEventListener("click", (e) => {
-      let id = e.target.closest("tr").rowIndex;
-      addProduct.innerText = "Update Product";
-      addProduct.id = "add-btn";
-      openModal();
-      showItems(id);
-      document.querySelector("#add-btn").addEventListener("click", () => {
-        editItem(id);
-      });
-    });
-  });
+updateTotalQty()
+updateTotalItems()
+updateTotalCat()
+  
   addProdBtn.addEventListener("click", () => {
     addProduct.innerText = "Add Product";
     addProduct.id = "btn-add";
@@ -46,6 +36,41 @@ changeLabelColors()
     closeModal()
     location.reload()
   })
+  deleteLi.addEventListener("click",()=>{
+    hideSummaryArea()
+    let delBtnArray = [...delBtn];
+  delBtnArray.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      // hideSummaryArea()
+      let id = e.target.closest("tr").rowIndex;
+      e.target.closest("tr").remove();
+      updateLocalStorage(id);
+      updateTotalQty()
+      updateTotalItems()
+      updateTotalCat()
+    });
+  });
+  })
+  updateDetailsLi.addEventListener("click",()=>{
+    hideSummaryAreaEdit()
+    let editBtnArray = [...editBtn];
+  editBtnArray.forEach((editBtn) => {
+    editBtn.addEventListener("click", (e) => {
+      let id = e.target.closest("tr").rowIndex;
+      addProduct.innerText = "Update Product";
+      addProduct.id = "add-btn";
+      openModal();
+      showItems(id);
+      document.querySelector("#add-btn").addEventListener("click", () => {
+        editItem(id);
+        // updateTableFields(id)
+      });
+    });
+  });
+    
+  })
+  // console.log(rowField[0].children)
+
 });
 
 function openModal() {
@@ -60,6 +85,27 @@ const editModalshow = () => {
   document.getElementById("pop_modal").style.visibility = "visible";
 };
 
+const hideSummaryArea =()=>{
+  summaryDiv.classList.add('hidden')
+  let actionCellArray = [...actionCell]
+  actionCellArray.forEach((cell)=>{
+    cell.innerHTML=""
+    cell.innerHTML=`<i class="fas fa-trash" ></i>`
+    labelHeader.innerHTML= "Delete"
+
+  })
+}
+
+const hideSummaryAreaEdit =()=>{
+  summaryDiv.classList.add('hidden')
+  let actionCellArray = [...actionCell]
+  actionCellArray.forEach((cell)=>{
+    cell.innerHTML =""
+    cell.innerHTML=`<i class="fas fa-edit"></i>`
+    labelHeader.innerHTML= "Edit"
+
+  })
+}
 const updateLocalStorage = (id) => {
   let product = JSON.parse(localStorage.getItem("product"));
   for (let i = 0; i < product.length; i++) {
@@ -78,47 +124,100 @@ const displayProducts = () => {
 
 const PopulateRows = (product) => {
   let productContainer = document.getElementById("table_body");
-
   productContainer.innerHTML += `
-    <tr>
+    <tr class= "row-field">
     <td>${product.Name}</td>
     <td> ${product.Desc} </td>
     <td>${product.Cat}</td>
     <td class="rule-center">${product.Qty}</td>
-    <td><a href="#"><i class="fas fa-trash" ></i> <span><i
-                    class="fas fa-edit"></i></span></a></td>
-    <td><a href="#"><i class="fa fa-exchange " data-indicator=${product.Qty} ></i> </a></td>
+    <td class="action"><a href="#"><i class="fa fa-exchange " data-indicator=${product.Qty} ></i> </a></td>
     
 
 </tr>`;
 };
-
+let ind ="";
 const editItem = (id) => {
-  let itemName = document.getElementById("item_name");
-  let itemDesc = document.getElementById("itemDesc");
-  let itemQty = document.getElementById("itemQty");
-  let itemCat = document.getElementById("itemCat");
-  let products = JSON.parse(localStorage.getItem("product"));
+  let itemName = document.getElementById("item_name").value;
+  let itemDesc = document.getElementById("itemDesc").value;
+  let itemQty = document.getElementById("itemQty").value;
+  let itemCat = document.getElementById("itemCat").value;
+  let products = JSON.parse(localStorage.getItem("product")); 
+  
+
   products.forEach((product, index) => {
     if (index == id - 1) {
-      product.Name = itemName.value;
-      product.Desc = itemDesc.value;
-      product.Qty = itemQty.value;
-      product.Cat = itemCat.value;
-      // product.Label = itemLabel;
+      ind=index
+      product.Name = itemName;
+      product.Desc = itemDesc;
+      product.Qty = itemQty;
+      product.Cat = itemCat;
+      //  console.log(rowField[index])
+      // rowCells[index][0]=itemName
+      // rowCells[index][1]=itemDesc
+      // rowCells[index][2]=itemCat
+      // rowCells[index][0]=itemQty
+      
     }
-    document.getElementById("pop_modal").style.visibility = "hidden";
   });
+  console.log(rowField[parseInt(ind)])
+
+  document.getElementById("pop_modal").style.visibility = "hidden";
+
+  // rowC.forEach((row, tbIndex)=>{
+  //   if(tbIndex===ind){
+  //     console.log(tbIndex)
+  //     console.log(ind)
+    //   row.innerHTML=`
+    //   <td>${itemName}</td>
+    // <td> ${itemDesc} </td>
+    // <td>${itemCat}</td>
+    // <td class="rule-center">${itemQty}</td>
+    // <td class="action"><a href="#"><i class="fas fa-edit " data-indicator=${itemQty} ></i> </a></td>`
+      // tbIndex=""
+      // ind=""
+
+// }
+
+  // })
   localStorage.setItem("product", JSON.stringify(products));
-  location.reload();
 };
+
+
+ 
+
+
+const updateTotalQty =()=>{
+let itemsInLocalStorage= getProducts()
+counter = 0;
+itemsInLocalStorage.forEach((item)=>{
+  counter += parseInt(item.Qty)
+})
+summaryInputs[0].children[1].innerHTML=counter;
+}
+
+const updateTotalItems=()=>{
+ let numberOfItems = getProducts().length
+ summaryInputs[1].children[1].innerHTML=numberOfItems;
+ 
+}
+
+const updateTotalCat=()=>{
+  let itemsInLocalStorage= getProducts()
+  let uniqueItemsArray =[];
+  itemsInLocalStorage.forEach((item)=>{
+    if(!uniqueItemsArray.includes(item.Cat)){
+      uniqueItemsArray.push(item.Cat)
+    }
+  })
+  summaryInputs[2].children[1].innerHTML=uniqueItemsArray.length;
+
+}
 
 const showItems = (id) => {
   let itemName = document.getElementById("item_name");
   let itemDesc = document.getElementById("itemDesc");
   let itemQty = document.getElementById("itemQty");
   let itemCat = document.getElementById("itemCat");
-  let itemLbale = document.getElementById("itemLabel");
 
   let products = JSON.parse(localStorage.getItem("product"));
   products.forEach((product, index) => {
@@ -127,7 +226,6 @@ const showItems = (id) => {
       itemDesc.value = product.Desc;
       itemQty.value = product.Qty;
       itemCat.value = product.Cat;
-      itemLabel.value = product.Label
     }
   });
 };
@@ -147,7 +245,6 @@ const addItem = () => {
       Desc: itemDesc,
       Cat: itemCat,
       Qty: itemQty,
-       // Label: itemLabel
     };
     PopulateRows(object);
     saveProducts(object);
@@ -158,7 +255,6 @@ const addItem = () => {
 
 const changeLabelColors= ()=>{
   let labelArray = [...labelIndicators]
-  // let products = JSON.parse(localStorage.getItem("product"));
 labelArray.forEach((label)=>{
   let labelQty= parseInt(label.dataset.indicator)
   // console.log(labelQty)
